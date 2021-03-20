@@ -1,0 +1,101 @@
+<template>
+  <div id="app">
+    <draggable
+      fallbackOnBody
+      class="rows"
+      group="rows"
+      ghostClass="row-ghost"
+      :swapThreshold="0.65"
+      :value="rows"
+      @input="input"
+      @add="inspect('add', $event)"
+      @sort="inspect('sort', $event)"
+      @end="inspect('end', $event)"
+    >
+      <div v-for="(row, rowIndex) in rows" :key="rowIndex">
+        <draggable
+          fallbackOnBody
+          group="rows"
+          :value="row"
+          class="row"
+          @input="inputRow(rowIndex, $event)"
+        >
+          <div v-for="col in row" :key="col" class="col">
+            {{ col }}
+          </div>
+        </draggable>
+      </div>
+    </draggable>
+  </div>
+</template>
+
+<script>
+import draggable from "vuedraggable";
+
+export default {
+  name: "App",
+  components: {
+    draggable,
+  },
+  data() {
+    return {
+      rows: [
+        [1, 2, 3],
+        [4, 5, 6],
+        [7, 8, 9],
+      ],
+    };
+  },
+  methods: {
+    input(rows) {
+      console.log(rows);
+      const fixed = [...rows].map((e) => (Array.isArray(e) ? e : [e]));
+      console.log(fixed);
+      this.$nextTick().then(() => {
+        this.$set(this, "rows", fixed);
+      });
+    },
+    inputRow(rowIndex, value) {
+      const newRows = [...this.rows];
+      newRows[rowIndex] = value;
+      ///this.$set(this.rows, rowIndex, value);
+      ///console.log(rowIndex, value);
+    },
+    inspect(code, event) {
+      // this.$emit(`x-${code}`, event);
+      // console.log(code, Object.keys(event));
+    },
+  },
+};
+</script>
+
+<style lang="scss">
+#app {
+  font-family: "Avenir", Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
+  margin-top: 60px;
+}
+.rows {
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  border: 1px solid #ccc;
+  .row {
+    margin: 10px 12px;
+    cursor: pointer;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    .col {
+      width: 32px;
+      height: 32px;
+      border: 1px solid red;
+      text-align: center;
+      padding-top: 6px;
+    }
+  }
+}
+</style>
