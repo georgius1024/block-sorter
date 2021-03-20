@@ -11,42 +11,30 @@
       @start="draggingRow = true"
       @end="draggingRow = false"
     >
-      <div v-for="row in rows" :key="row.id">
-        <draggable
-          fallbackOnBody
-          :group="draggingRow? null : 'rows'"
-          :swapThreshold="0.65"
-          :value="row.cols"
-          @input="inputRow(row.id, $event)"
-          class="row"
-          :class="{ dragging: draggingRow }"
-          ghostClass="col-ghost"
-          @start="draggingCol = row.id"
-          @end="draggingCol = null"
-        >
-          <div
-            v-for="col in row.cols"
-            :key="col"
-            class="col"
-            :class="{ dragging: draggingCol === row.id }"
-          >
-            {{ col }}
-          </div>
-        </draggable>
-      </div>
+      <template slot="header">
+        <div style="padding: 12px 16px"></div>
+      </template>
+      <Row
+        v-for="row in rows"
+        :row="row"
+        :draggingRow="draggingRow"
+        @input="inputRow(row.id, $event)"
+        :key="row.id"
+      />
     </draggable>
   </div>
 </template>
 
 <script>
 // TODO LIMIT 3 BLOCKS/ROW
-
 import draggable from "vuedraggable";
+import Row from "./components/Row";
 
 export default {
   name: "App",
   components: {
     draggable,
+    Row,
   },
   data() {
     return {
@@ -62,31 +50,20 @@ export default {
   },
   methods: {
     input(value) {
-      //this.$set(this, "rows", rows);
-      // console.log(rows);
-      console.log(JSON.stringify(value));
       const rows = [...value]
         .map((e) =>
           e.id && Array.isArray(e.cols) ? e : { id: this.id++, cols: [e] }
         )
         .filter((e) => e.cols.length);
-      console.log("rowsAfter", JSON.stringify(rows));
       this.$set(this, "rows", rows);
     },
     inputRow(id, cols) {
       this.$nextTick().then(() => {
-        console.log("rowsBefore", JSON.stringify(this.rows));
         const rows = [...this.rows]
           .map((e) => (e.id === id ? { id, cols } : e))
           .filter((e) => e.cols.length);
         this.$set(this, "rows", rows);
-        console.log(id, cols);
-        console.log(JSON.stringify(rows));
       });
-    },
-    inspect(code, event) {
-      this.$emit(`x-${code}`, event);
-      console.log(code, Object.keys(event));
     },
   },
 };
@@ -104,49 +81,20 @@ export default {
 .rows {
   display: flex;
   flex-direction: column;
-  padding: 10px;
+  margin: 10px;
   border: 1px solid #ccc;
-  .row {
-    cursor: pointer;
-    display: flex;
-    flex-direction: row;
-    padding: 12px 16px;
-    .col {
-      flex-grow: 1;
-      height: 32px;
-      border: 1px solid red;
-      padding-top: 15px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 16px;
-      font-size: 24px;
-      border-radius: 4px;
-      margin: 4px;
-    }
-  }
-  .row-ghost {
-    background: #00c5db;
-    color: #00c5db;
-    height: 75px;
-    max-width: 100%;
-    padding: 0 !important;
-    border: none;
-    margin: 0 !important;
-    border-radius: unset;
-    display: flex;
-    & > * {
-      display: none;
-    }
-  }
-  .col-ghost {
-    background: red;
-    max-height: unset;
-    height: auto;
-    flex-grow: 1;
-    /* width: 32px !important;
-    max-width: 32px;
-    min-width: 32px; */
+}
+.row-ghost {
+  background: #00c5db;
+  height: 75px;
+  max-width: 100%;
+  padding: 0 !important;
+  border: none;
+  margin: 0 !important;
+  border-radius: unset;
+  display: flex;
+  & > * {
+    display: none;
   }
 }
 </style>
