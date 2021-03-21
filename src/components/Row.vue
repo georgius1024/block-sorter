@@ -6,6 +6,8 @@
     :value="row.cols"
     :sort="row.cols.length > 1"
     @input="$emit('input', $event)"
+    @start="$emit('start')"
+    @end="$emit('end')"
     class="row"
     ghostClass="col-ghost"
   >

@@ -10,7 +10,6 @@
       @input="input"
       @start="draggingRow = true"
       @end="draggingRow = false"
-      filter="#skip-row"
     >
       <template slot="header"> </template>
       <div id="skip-row"></div>
@@ -20,6 +19,8 @@
         :row="row"
         :draggingRow="draggingRow"
         @input="inputRow(row.id, $event)"
+        @start="draggingCol = true"
+        @end="draggingCol = false"
         :key="row.id"
       />
     </draggable>
@@ -51,11 +52,13 @@ export default {
   },
   methods: {
     input(value) {
+      console.log(JSON.stringify(value));
       const rows = [...value]
         .map((e) =>
           e.id && Array.isArray(e.cols) ? e : { id: this.id++, cols: [e] }
         )
         .filter((e) => e.cols.length);
+      console.log(JSON.stringify(rows));
       this.$set(this, "rows", rows);
     },
     inputRow(id, cols) {
