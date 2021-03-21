@@ -1,7 +1,7 @@
 <template>
   <draggable
     fallbackOnBody
-    :group="draggingRow ? null : 'rows'"
+    group="draggingRow ? null : 'rows'"
     :swapThreshold="0.65"
     :value="row.cols"
     :sort="row.cols.length > 1"

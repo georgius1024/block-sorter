@@ -11,9 +11,8 @@
       @start="draggingRow = true"
       @end="draggingRow = false"
     >
-      <template slot="header">
-        <div style="padding: 12px 16px"></div>
-      </template>
+      <!-- <div style="padding: 1px 16px"></div> -->
+
       <Row
         v-for="row in rows"
         :row="row"
@@ -81,12 +80,11 @@ export default {
 .rows {
   display: flex;
   flex-direction: column;
-  margin: 10px;
-  border: 1px solid #ccc;
+  padding: 10px;
 }
 .row-ghost {
   background: #00c5db;
-  height: 75px;
+  min-height: 75px;
   max-width: 100%;
   padding: 0 !important;
   border: none;
