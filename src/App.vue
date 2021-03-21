@@ -10,8 +10,10 @@
       @input="input"
       @start="draggingRow = true"
       @end="draggingRow = false"
+      filter="#skip-row"
     >
-      <!-- <div style="padding: 1px 16px"></div> -->
+      <template slot="header"> </template>
+      <div id="skip-row"></div>
 
       <Row
         v-for="row in rows"
@@ -64,6 +66,9 @@ export default {
         this.$set(this, "rows", rows);
       });
     },
+    inspect(e) {
+      console.log(e);
+    },
   },
 };
 </script>
@@ -81,6 +86,11 @@ export default {
   display: flex;
   flex-direction: column;
   padding: 10px;
+  #skip-row {
+    margin-top: 12px;
+    padding: 1px 16px;
+    background: transparent;
+  }
 }
 .row-ghost {
   background: #00c5db;
