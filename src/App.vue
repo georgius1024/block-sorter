@@ -10,8 +10,8 @@
       @input="input"
       @start="draggingRow = true"
       @end="draggingRow = false"
+      filter="#skip-row"
     >
-      <template slot="header"> </template>
       <div id="skip-row"></div>
 
       <Row
@@ -19,8 +19,6 @@
         :row="row"
         :draggingRow="draggingRow"
         @input="inputRow(row.id, $event)"
-        @start="draggingCol = true"
-        @end="draggingCol = false"
         :key="row.id"
       />
     </draggable>
