@@ -41,7 +41,7 @@ export default {
 <style lang="scss" scoped>
 .row-wrapper {
   display: flex;
-  padding: 0px 16px;
+  padding: 10px 16px;
   .row {
     flex-grow: 1;
     cursor: pointer;

@@ -10,10 +10,7 @@
       @input="input"
       @start="draggingRow = true"
       @end="draggingRow = false"
-      filter="#skip-row"
     >
-      <div id="skip-row"></div>
-
       <Row
         v-for="row in rows"
         :row="row"
@@ -87,11 +84,6 @@ export default {
   display: flex;
   flex-direction: column;
   padding: 10px;
-  #skip-row {
-    margin-top: 12px;
-    padding: 1px 16px;
-    background: transparent;
-  }
 }
 .row-ghost {
   background: #00c5db;
